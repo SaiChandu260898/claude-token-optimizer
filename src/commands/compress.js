@@ -172,7 +172,7 @@ export async function compressCommand(options) {
   const stats = computeTokenStats(original, compressed);
   printCompressionReport(stats, changes, targetLabel);
   if (!shouldWrite(original, compressed, changes, options?.dryRun)) return;
-  const confirmed = await promptApply();
+  const confirmed = options?.yes || await promptApply();
   if (!confirmed) {
     console.log(chalk.dim('Skipped.'));
     console.log('');

@@ -446,4 +446,28 @@ describe('e2e — subprocess', () => {
       fs.rmSync(fileTmpDir, { recursive: true, force: true });
     }
   });
+
+  it('--yes applies changes without reading stdin', () => {
+    const yesTmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'compress-yes-'));
+    try {
+      const content = 'line\n\n\n\nother\n```javascript\ncode\n```\n';
+      fs.writeFileSync(path.join(yesTmpDir, 'CLAUDE.md'), content, 'utf8');
+      const binPath = path.resolve(
+        path.dirname(new URL(import.meta.url).pathname),
+        '../bin/cto.js',
+      );
+      const result = spawnSync(process.execPath, [binPath, 'compress', '--yes'], {
+        cwd: yesTmpDir,
+        encoding: 'utf8',
+        timeout: 10000,
+        input: '',
+        env: { ...process.env, FORCE_COLOR: '0' },
+      });
+      assert.strictEqual(result.status, 0, `exit ${result.status}\nstdout: ${result.stdout}\nstderr: ${result.stderr}`);
+      assert.notStrictEqual(fs.readFileSync(path.join(yesTmpDir, 'CLAUDE.md'), 'utf8'), content, 'CLAUDE.md should be compressed');
+      assert.strictEqual(fs.readFileSync(path.join(yesTmpDir, 'CLAUDE.md.bak'), 'utf8'), content);
+    } finally {
+      fs.rmSync(yesTmpDir, { recursive: true, force: true });
+    }
+  });
 });

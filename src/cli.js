@@ -18,7 +18,7 @@ export function run() {
 
   program
     .name('cto')
-    .description('Claude Token Optimizer — cut Claude Code context usage by 90%')
+    .description('Cut the tokens Claude Code loads at session start')
     .version(version);
 
   program
@@ -62,6 +62,7 @@ export function run() {
     .option('--backup', 'write <file>.bak before overwriting (default: on)', true)
     .option('--no-backup', 'skip backup')
     .option('--aggressive', 'apply more aggressive list truncation')
+    .option('--yes', 'apply changes without asking')
     .action(compressCommand);
 
   program
