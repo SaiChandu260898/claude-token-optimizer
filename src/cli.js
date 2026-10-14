@@ -56,8 +56,9 @@ export function run() {
   program
     .command('compress')
     .description('Reduce CLAUDE.md token count with deterministic compression rules')
+    .option('--file <path>', 'compress a different markdown file', 'CLAUDE.md')
     .option('--dry-run', 'show changes without writing')
-    .option('--backup', 'write CLAUDE.md.bak before overwriting (default: on)', true)
+    .option('--backup', 'write <file>.bak before overwriting (default: on)', true)
     .option('--no-backup', 'skip backup')
     .option('--aggressive', 'apply more aggressive list truncation')
     .action(compressCommand);
@@ -65,9 +66,10 @@ export function run() {
   program
     .command('prune')
     .description('Remove stale sections from CLAUDE.md (completed tasks, session notes, empty sections)')
+    .option('--file <path>', 'prune a different markdown file', 'CLAUDE.md')
     .option('--yes', 'auto-accept all removals')
     .option('--dry-run', 'show what would be removed without writing')
-    .option('--backup', 'write CLAUDE.md.bak before changes (default: on)', true)
+    .option('--backup', 'write <file>.bak before changes (default: on)', true)
     .option('--no-backup', 'skip backup')
     .option('--days <count>', 'prune only dated session notes older than N days')
     .action(pruneCommand);

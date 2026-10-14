@@ -103,10 +103,10 @@ export function applyCompressionRules(content, aggressive = false) {
 
 // ─── output helpers ──────────────────────────────────────────────────────────
 
-export function printCompressionReport(stats, changes) {
+export function printCompressionReport(stats, changes, targetLabel = 'CLAUDE.md') {
   const { beforeTokens, afterTokens, pct } = stats;
   console.log('');
-  console.log(chalk.bold('cto compress — CLAUDE.md optimization'));
+  console.log(chalk.bold(`cto compress — ${targetLabel} optimization`));
   console.log('');
   console.log(`  Before: ${chalk.yellow('~' + beforeTokens)} tokens`);
   console.log(`  After:  ${chalk.green('~' + afterTokens)} tokens (${pct}% reduction)`);
@@ -146,12 +146,12 @@ async function promptApply() {
   return ans.trim().toLowerCase() === 'y';
 }
 
-function writeCompressed(claudeMdPath, original, compressed, backup, stats) {
+function writeCompressed(targetPath, targetLabel, original, compressed, backup, stats) {
   if (backup !== false) {
-    fs.writeFileSync(claudeMdPath + '.bak', original, 'utf8');
-    console.log(chalk.dim('  Backup: CLAUDE.md.bak'));
+    fs.writeFileSync(targetPath + '.bak', original, 'utf8');
+    console.log(chalk.dim(`  Backup: ${targetLabel}.bak`));
   }
-  fs.writeFileSync(claudeMdPath, compressed, 'utf8');
+  fs.writeFileSync(targetPath, compressed, 'utf8');
   console.log(chalk.green(`✓ Saved — ~${stats.saved} tokens freed (${stats.pct}% reduction)`));
   console.log('');
 }
@@ -159,15 +159,18 @@ function writeCompressed(claudeMdPath, original, compressed, backup, stats) {
 // ─── command entry point ─────────────────────────────────────────────────────
 
 export async function compressCommand(options) {
-  const claudeMdPath = path.join(process.cwd(), 'CLAUDE.md');
-  if (!fs.existsSync(claudeMdPath)) {
-    console.error(chalk.red('✗ CLAUDE.md not found. Run: cto init'));
+  const dir = process.cwd();
+  const targetPath = path.resolve(dir, options?.file || 'CLAUDE.md');
+  const targetLabel = path.relative(dir, targetPath);
+  if (!fs.existsSync(targetPath)) {
+    const hint = targetLabel === 'CLAUDE.md' ? ' Run: cto init' : '';
+    console.error(chalk.red(`✗ ${targetLabel} not found.${hint}`));
     process.exit(1);
   }
-  const original = fs.readFileSync(claudeMdPath, 'utf8');
+  const original = fs.readFileSync(targetPath, 'utf8');
   const { result: compressed, changes } = applyCompressionRules(original, options?.aggressive);
   const stats = computeTokenStats(original, compressed);
-  printCompressionReport(stats, changes);
+  printCompressionReport(stats, changes, targetLabel);
   if (!shouldWrite(original, compressed, changes, options?.dryRun)) return;
   const confirmed = await promptApply();
   if (!confirmed) {
@@ -175,5 +178,5 @@ export async function compressCommand(options) {
     console.log('');
     return;
   }
-  writeCompressed(claudeMdPath, original, compressed, options?.backup, stats);
+  writeCompressed(targetPath, targetLabel, original, compressed, options?.backup, stats);
 }

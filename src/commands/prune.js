@@ -136,14 +136,21 @@ export function formatDryRunLine(target, index) {
 }
 
 // Pure: builds the archive filename
-export function buildArchiveName(date, heading) {
-  const slug = heading.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-  return `${date}-pruned-${slug}.md`;
+function slugify(text) {
+  return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+}
+
+// Archives from the default file keep their historical name. Other sources get a
+// prefix so `prune --file a.md` and `prune --file b.md` on the same day cannot
+// overwrite each other's "completed" archive.
+export function buildArchiveName(date, heading, source = 'CLAUDE.md') {
+  const sourcePrefix = source === 'CLAUDE.md' ? '' : slugify(source.replace(/\.md$/i, '')) + '-';
+  return `${date}-pruned-${sourcePrefix}${slugify(heading)}.md`;
 }
 
 // Pure: builds the archive file content
-export function buildArchiveContent(date, content) {
-  return `# Pruned from CLAUDE.md on ${date}\n\n${content}\n`;
+export function buildArchiveContent(date, content, source = 'CLAUDE.md') {
+  return `# Pruned from ${source} on ${date}\n\n${content}\n`;
 }
 
 // Pure: applies all target removals to content string, returns result + totalSaved
@@ -157,11 +164,11 @@ export function applyPruneTargets(content, targets) {
   return { result, totalSaved };
 }
 
-function writeArchive(dir, target, date) {
+function writeArchive(dir, target, date, sourceLabel) {
   const archiveDir = path.join(dir, '.claude', target.destination);
   fs.mkdirSync(archiveDir, { recursive: true });
-  const archiveFile = path.join(archiveDir, buildArchiveName(date, target.heading));
-  fs.writeFileSync(archiveFile, buildArchiveContent(date, target.content), 'utf8');
+  const archiveFile = path.join(archiveDir, buildArchiveName(date, target.heading, sourceLabel));
+  fs.writeFileSync(archiveFile, buildArchiveContent(date, target.content, sourceLabel), 'utf8');
   return archiveFile;
 }
 
@@ -209,34 +216,37 @@ async function collectAccepted(targets, options) {
   return accepted;
 }
 
-function commitChanges(claudeMdPath, dir, original, accepted, options) {
+function commitChanges(target, original, accepted, options) {
+  const { path: targetPath, label: targetLabel, dir } = target;
   if (options?.backup !== false) {
-    fs.writeFileSync(claudeMdPath + '.bak', original, 'utf8');
+    fs.writeFileSync(targetPath + '.bak', original, 'utf8');
   }
   const date = new Date().toISOString().split('T')[0];
   for (const t of accepted) {
     if (t.destination) {
-      const archiveFile = writeArchive(dir, t, date);
+      const archiveFile = writeArchive(dir, t, date, targetLabel);
       console.log(chalk.dim(`      Archived → ${path.relative(dir, archiveFile)}`));
     }
   }
   const { result, totalSaved } = applyPruneTargets(original, accepted);
-  fs.writeFileSync(claudeMdPath, result, 'utf8');
+  fs.writeFileSync(targetPath, result, 'utf8');
   const afterTokens = countTokens(result);
   const beforeTokens = countTokens(original);
-  console.log(chalk.green(`✓ Saved ~${totalSaved} tokens — CLAUDE.md now ~${afterTokens} tokens (was ~${beforeTokens})`));
+  console.log(chalk.green(`✓ Saved ~${totalSaved} tokens — ${targetLabel} now ~${afterTokens} tokens (was ~${beforeTokens})`));
   console.log('');
 }
 
-function loadTargets(claudeMdPath, options) {
-  if (!fs.existsSync(claudeMdPath)) {
-    console.error(chalk.red('✗ CLAUDE.md not found. Run: cto init'));
+function loadTargets(target, options) {
+  const { path: targetPath, label: targetLabel } = target;
+  if (!fs.existsSync(targetPath)) {
+    const hint = targetLabel === 'CLAUDE.md' ? ' Run: cto init' : '';
+    console.error(chalk.red(`✗ ${targetLabel} not found.${hint}`));
     process.exit(1);
   }
   console.log('');
-  console.log(chalk.bold('cto prune — scanning CLAUDE.md'));
+  console.log(chalk.bold(`cto prune — scanning ${targetLabel}`));
   console.log('');
-  const original = fs.readFileSync(claudeMdPath, 'utf8');
+  const original = fs.readFileSync(targetPath, 'utf8');
   const findOptions = options?.days != null ? { days: options.days, now: options.now } : undefined;
   return { original, targets: findPruneTargets(original, findOptions) };
 }
@@ -259,10 +269,11 @@ export async function pruneCommand(options) {
     }
   }
   const dir = process.cwd();
-  const claudeMdPath = path.join(dir, 'CLAUDE.md');
-  const { original, targets } = loadTargets(claudeMdPath, options);
+  const targetPath = path.resolve(dir, options?.file || 'CLAUDE.md');
+  const target = { path: targetPath, label: path.relative(dir, targetPath), dir };
+  const { original, targets } = loadTargets(target, options);
   if (targets.length === 0) {
-    console.log(chalk.green('  Nothing to prune. CLAUDE.md looks clean.'));
+    console.log(chalk.green(`  Nothing to prune. ${target.label} looks clean.`));
     console.log('');
     return;
   }
@@ -273,5 +284,5 @@ export async function pruneCommand(options) {
     console.log('');
     return;
   }
-  commitChanges(claudeMdPath, dir, original, accepted, options);
+  commitChanges(target, original, accepted, options);
 }

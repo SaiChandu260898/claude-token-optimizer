@@ -418,4 +418,32 @@ describe('e2e — subprocess', () => {
       fs.rmSync(applyTmpDir, { recursive: true, force: true });
     }
   });
+
+  it('--file compresses the given markdown file instead of CLAUDE.md', () => {
+    const fileTmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'compress-file-'));
+    try {
+      const content = 'line\n\n\n\nother\n```javascript\ncode\n```\n';
+      fs.mkdirSync(path.join(fileTmpDir, 'docs'));
+      fs.writeFileSync(path.join(fileTmpDir, 'docs', 'notes.md'), content, 'utf8');
+      const binPath = path.resolve(
+        path.dirname(new URL(import.meta.url).pathname),
+        '../bin/cto.js',
+      );
+      const result = spawnSync(process.execPath, [binPath, 'compress', '--file', 'docs/notes.md'], {
+        cwd: fileTmpDir,
+        encoding: 'utf8',
+        timeout: 10000,
+        input: 'y\n',
+        env: { ...process.env, FORCE_COLOR: '0' },
+      });
+      assert.strictEqual(result.status, 0, `exit ${result.status}\nstdout: ${result.stdout}\nstderr: ${result.stderr}`);
+      assert.ok(result.stdout.includes('docs/notes.md'), `expected target name in stdout: ${result.stdout}`);
+      const after = fs.readFileSync(path.join(fileTmpDir, 'docs', 'notes.md'), 'utf8');
+      assert.notStrictEqual(after, content, 'docs/notes.md should be compressed');
+      assert.strictEqual(fs.readFileSync(path.join(fileTmpDir, 'docs', 'notes.md.bak'), 'utf8'), content);
+      assert.ok(!fs.existsSync(path.join(fileTmpDir, 'CLAUDE.md')), 'CLAUDE.md must not be created');
+    } finally {
+      fs.rmSync(fileTmpDir, { recursive: true, force: true });
+    }
+  });
 });

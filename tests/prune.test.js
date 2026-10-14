@@ -269,6 +269,11 @@ describe('unit — pure logic', () => {
       const name = buildArchiveName('2026-05-21', '2026-01-15');
       assert.strictEqual(name, '2026-05-21-pruned-2026-01-15.md');
     });
+
+    it('prefixes the source file when it is not CLAUDE.md, so two files pruned the same day do not collide', () => {
+      const name = buildArchiveName('2026-05-21', 'Completed', 'docs/notes.md');
+      assert.strictEqual(name, '2026-05-21-pruned-docs-notes-completed.md');
+    });
   });
 
   describe('buildArchiveContent', () => {
@@ -277,6 +282,11 @@ describe('unit — pure logic', () => {
       assert.ok(out.startsWith('# Pruned from CLAUDE.md on 2026-05-21\n'));
       assert.ok(out.includes('## Completed'));
       assert.ok(out.includes('- task'));
+    });
+
+    it('names the source file in the header when given', () => {
+      const out = buildArchiveContent('2026-05-21', '- task\n', 'docs/notes.md');
+      assert.ok(out.startsWith('# Pruned from docs/notes.md on 2026-05-21\n'));
     });
   });
 
@@ -321,6 +331,31 @@ describe('integration — filesystem', () => {
       await pruneCommand({ yes: true, backup: false });
       const after = fs.readFileSync(claudeMd, 'utf8');
       assert.strictEqual(after, content);
+    } finally {
+      process.chdir(orig);
+    }
+  });
+
+  it('--file prunes the given markdown file and backs it up, leaving CLAUDE.md alone', async () => {
+    const tmpDir = makeTmpDir();
+    const claudeMd = path.join(tmpDir, 'CLAUDE.md');
+    const notesMd = path.join(tmpDir, 'docs', 'notes.md');
+    const claudeContent = '# Project\n\n## Completed\n\n- claude task\n';
+    const notesContent = '# Notes\n\n## Active\n\nwork\n\n## Completed\n\n- notes task\n';
+    fs.mkdirSync(path.dirname(notesMd));
+    fs.writeFileSync(claudeMd, claudeContent, 'utf8');
+    fs.writeFileSync(notesMd, notesContent, 'utf8');
+    const orig = process.cwd();
+    try {
+      process.chdir(tmpDir);
+      const { pruneCommand } = await import('../src/commands/prune.js');
+      await pruneCommand({ yes: true, file: 'docs/notes.md' });
+      const after = fs.readFileSync(notesMd, 'utf8');
+      assert.ok(!after.includes('notes task'), 'Completed section should be removed from docs/notes.md');
+      assert.ok(after.includes('## Active'), 'Active section should remain');
+      assert.strictEqual(fs.readFileSync(notesMd + '.bak', 'utf8'), notesContent, 'backup sits next to the target');
+      assert.strictEqual(fs.readFileSync(claudeMd, 'utf8'), claudeContent, 'CLAUDE.md must be untouched');
+      assert.ok(!fs.existsSync(claudeMd + '.bak'), 'no CLAUDE.md.bak');
     } finally {
       process.chdir(orig);
     }
