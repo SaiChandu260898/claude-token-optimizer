@@ -1,32 +1,21 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="800" height="520" viewBox="0 0 800 520">
-  <rect width="800" height="520" fill="#0d1117"/>
-  <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" fill="#c9d1d9" font-size="15">
-    <text x="30" y="44" font-size="20" font-weight="700" fill="#f0f6fc">Startup tokens, before</text>
-    <text x="770" y="44" font-size="15" text-anchor="end" fill="#9da7b3">total ~11,000</text>
-    <text x="30" y="82">All docs</text>
-    <rect x="230" y="66" width="480" height="22" rx="4" fill="#484f58"/>
-    <text x="720" y="83">~8,000</text>
-    <text x="30" y="122">Old session notes</text>
-    <rect x="230" y="106" width="120" height="22" rx="4" fill="#484f58"/>
-    <text x="360" y="123">~2,000</text>
-    <text x="30" y="162">Task history</text>
-    <rect x="230" y="146" width="60" height="22" rx="4" fill="#484f58"/>
-    <text x="300" y="163">~1,000</text>
-    <line x1="30" y1="206" x2="770" y2="206" stroke="#30363d"/>
-    <text x="30" y="248" font-size="20" font-weight="700" fill="#f0f6fc">Startup tokens, after</text>
-    <text x="770" y="248" font-size="15" text-anchor="end" fill="#9da7b3">total ~800</text>
-    <text x="30" y="286">CLAUDE.md</text>
-    <rect x="230" y="270" width="27" height="22" rx="4" fill="#3fb950"/>
-    <text x="267" y="287">~450</text>
-    <text x="30" y="326">COMMON_MISTAKES.md</text>
-    <rect x="230" y="310" width="21" height="22" rx="4" fill="#3fb950"/>
-    <text x="261" y="327">~350</text>
-    <text x="30" y="366">QUICK_START.md</text>
-    <rect x="230" y="350" width="6" height="22" rx="3" fill="#3fb950"/>
-    <text x="246" y="367">~100</text>
-    <text x="30" y="406">ARCHITECTURE_MAP.md</text>
-    <rect x="230" y="390" width="9" height="22" rx="3" fill="#3fb950"/>
-    <text x="249" y="407">~150</text>
-    <text x="30" y="480" font-size="13" fill="#9da7b3">Measured on a RedwoodJS project. Claude 2 tokenizer, estimates. Bars share one scale.</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="200" viewBox="0 0 1000 200">
+  <rect width="1000" height="200" fill="#f2f1ec"/>
+  <g font-family="ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-size="15" fill="#111111">
+    <text x="30" y="40" font-size="16" font-weight="700" fill="#d63a2f" letter-spacing="2">STARTUP TOKENS, MY PROJECT</text>
+    <text x="970" y="40" text-anchor="end" font-size="13" fill="#6b6b6b">bars share one scale</text>
+    <text x="30" y="90" font-weight="700">Before</text>
+    <rect x="140" y="68" width="553" height="32" fill="#111111"/>
+    <rect x="693" y="68" width="138" height="32" fill="#4a4a4a" stroke="#111111" stroke-width="2"/>
+    <rect x="831" y="68" width="69" height="32" fill="#9a9a9a" stroke="#111111" stroke-width="2"/>
+    <text x="416" y="90" text-anchor="middle" font-weight="700" fill="#ffffff">all docs ~8,000</text>
+    <text x="762" y="90" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">notes ~2,000</text>
+    <text x="866" y="90" text-anchor="middle" font-size="12" font-weight="700" fill="#111111">~1,000</text>
+    <text x="866" y="118" text-anchor="middle" font-size="11" fill="#6b6b6b">task history</text>
+    <text x="912" y="90" font-weight="700">~11,000</text>
+    <text x="30" y="164" font-weight="700">After</text>
+    <rect x="140" y="142" width="55" height="32" fill="#d63a2f" stroke="#111111" stroke-width="2"/>
+    <text x="207" y="164" font-weight="700">~800</text>
+    <rect x="276" y="142" width="122" height="32" fill="none" stroke="#d63a2f" stroke-width="2.5"/>
+    <text x="337" y="164" text-anchor="middle" font-weight="700" fill="#d63a2f">93% less</text>
   </g>
 </svg>

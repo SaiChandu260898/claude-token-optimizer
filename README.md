@@ -2,37 +2,108 @@
 
 # Claude Token Optimizer
 
-![claude-token-optimizer: startup drops from about 11,000 tokens to about 800](https://raw.githubusercontent.com/nadimtuhin/claude-token-optimizer/main/docs/images/social-preview.png)
+![Claude Code startup drops from about 11,000 tokens to about 800, 93% less](https://raw.githubusercontent.com/nadimtuhin/claude-token-optimizer/main/docs/images/hero.svg)
 
-**Cut the tokens Claude Code loads before you type a word.**
+**Claude rereads everything.** Every session. You pay each time.
 
-[![npm version](https://img.shields.io/npm/v/claude-token-optimizer.svg?style=flat-square)](https://www.npmjs.com/package/claude-token-optimizer)
-[![npm downloads](https://img.shields.io/npm/dm/claude-token-optimizer.svg?style=flat-square)](https://www.npmjs.com/package/claude-token-optimizer)
-[![Tests](https://img.shields.io/github/actions/workflow/status/nadimtuhin/claude-token-optimizer/test.yml?branch=main&label=tests&style=flat-square)](https://github.com/nadimtuhin/claude-token-optimizer/actions/workflows/test.yml)
-[![Node 20+](https://img.shields.io/badge/node-20%2B-339933.svg?style=flat-square)](https://nodejs.org)
-[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](LICENSE)
-
-[Install](#install) · [For AI agents](#for-ai-coding-agents) · [Before and after](#before-and-after) · [Commands](#commands) · [Hooks](#hooks) · [FAQ](#faq)
+`★ 600+` [`npm`](https://www.npmjs.com/package/claude-token-optimizer) [`MIT`](LICENSE) `Node 20+`
 
 </div>
 
-## Why this exists
+<br>
 
-**Claude Code was spending 11,000 tokens on my old notes before I typed a word.**
+Mine was 11,000 tokens per session. Open 20 sessions a day and that is 220,000 tokens gone before you type a word. That is money, usage limits, and room Claude could have used for your code.
 
-That was my RedwoodJS project. Every session opened by loading about 8,000 tokens of docs, 2,000 of old session notes, and 1,000 of finished task history. I paid for all of it every time, and it took room my code could have used.
+<br>
 
-So I moved it. A short `CLAUDE.md` and three small reference files stay loaded. Everything else waits in files Claude reads only when asked. Startup dropped to about 800 tokens.
+![Fix it in two lines](https://raw.githubusercontent.com/nadimtuhin/claude-token-optimizer/main/docs/images/h-fix.svg)
 
-`cto` reduces Claude Code token usage the same way in your project. It sets up that layout, measures what loads, and keeps it from growing back.
+Open a terminal in your project folder and paste each line as is. Inside Claude Code, type `!` first, then paste.
+
+**0. Keep a copy of your notes, just in case:**
+
+```bash
+cp CLAUDE.md CLAUDE.md.mine
+```
+
+**1. See what Claude rereads every session:**
+
+```bash
+npx -y claude-token-optimizer measure
+```
+
+**2. Shrink it:**
+
+```bash
+npx -y claude-token-optimizer prune --yes
+```
+
+Old session notes and finished task lists move into side files Claude opens only when needed. You get a line like `✓ Saved ~3414 tokens`. Run step 1 again to see your new total. Says "Nothing to prune"? Use the Claude Code prompt below instead.
+
+**Rather not type commands?** Paste this into Claude Code:
+
+```
+Back up my CLAUDE.md, then set up github.com/nadimtuhin/claude-token-optimizer by following its AGENTS.md. Show me the token count before and after.
+```
+
+<br>
+
+![What just happened](https://raw.githubusercontent.com/nadimtuhin/claude-token-optimizer/main/docs/images/h-what.svg)
+
+**Claude reads in tokens.** Small pieces of text. Before, every session reread all your project notes, piece by piece.
+
+**Now it gets a cheat sheet.** A short file at the start. Everything else waits in files Claude opens only when it needs them.
+
+![Big docs go through this tool and become a small always-loaded cheat sheet plus on-demand files](https://raw.githubusercontent.com/nadimtuhin/claude-token-optimizer/main/docs/images/how-it-works.svg)
+
+Nothing about how you use Claude changes. Each session just starts lighter.
+
+<br>
+
+![Where the tokens went](https://raw.githubusercontent.com/nadimtuhin/claude-token-optimizer/main/docs/images/h-where.svg)
+
+**My project, before and after.** Claude still finds the old notes when it needs them. It just stops rereading them every session.
+
+![Startup tokens before and after: about 11,000 down to about 800](https://raw.githubusercontent.com/nadimtuhin/claude-token-optimizer/main/docs/images/before-after.svg)
+
+<br>
+
+![Need help](https://raw.githubusercontent.com/nadimtuhin/claude-token-optimizer/main/docs/images/h-help.svg)
+
+<details>
+<summary>"command not found" or an error about Node</summary>
+
+You need Node 20 or newer. Run `node -v` to check, and install it from [nodejs.org](https://nodejs.org) if the number is lower.
+
+If it says `cto: command not found`, put `npx -y claude-token-optimizer` in front instead of `cto`.
+
+</details>
+
+<details>
+<summary>Will it overwrite my files?</summary>
+
+It rewrites `CLAUDE.md` and saves the old one as `CLAUDE.md.bak`. A second run replaces that `.bak`, so keep your own copy from step 0. `cto init` (for developers, below) can replace `.claudeignore` and `.claude/*.md` in a project with no `CLAUDE.md`. The exact list of files it writes is in [What cto init creates](#what-cto-init-creates).
+
+</details>
+
+<details>
+<summary>How do I undo it?</summary>
+
+Put back the copy you made: `cp CLAUDE.md.mine CLAUDE.md`. Using git? Run `git restore CLAUDE.md`, then `git clean -n` to list the new files, and `git clean -fd` once you have checked that list.
+
+</details>
+
+<br>
+
+![For developers](https://raw.githubusercontent.com/nadimtuhin/claude-token-optimizer/main/docs/images/h-dev.svg)
+
+Everything below is reference. You don't need it to get started.
+
+[Install](#install) · [For AI agents](#for-ai-coding-agents) · [The numbers](#the-numbers) · [Commands](#commands) · [Hooks](#hooks) · [FAQ](#faq)
 
 ## Install
 
-```bash
-npx claude-token-optimizer init
-```
-
-Prefer a global `cto` command? Either of these works:
+The `npx` lines at the top need no install. Prefer a global `cto` command? Either of these works:
 
 ```bash
 npm install -g claude-token-optimizer
@@ -60,20 +131,24 @@ npx -y claude-token-optimizer prune --yes
 npx -y claude-token-optimizer compress --yes
 ```
 
-## Before and after
+## The numbers
 
-![Startup tokens before and after cto: about 11,000 down to about 800](https://raw.githubusercontent.com/nadimtuhin/claude-token-optimizer/main/docs/images/before-after.svg)
+On my RedwoodJS project, every session opened by loading about 8,000 tokens of docs, 2,000 of old session notes, and 1,000 of finished task history. `cto` reduces Claude Code token usage by keeping a short `CLAUDE.md` and four small reference files loaded, and moving the rest to files read on demand.
 
 <details>
 <summary>The same numbers as a table</summary>
 
 | Before | Tokens | After | Tokens |
 |---|--:|---|--:|
-| All docs | ~8,000 | `CLAUDE.md` | ~450 |
-| Old session notes | ~2,000 | `COMMON_MISTAKES.md` | ~350 |
-| Task history | ~1,000 | `QUICK_START.md` | ~100 |
-| | | `ARCHITECTURE_MAP.md` | ~150 |
-| **Startup total** | **~11,000** | **Startup total** | **~800** |
+| All docs | ~8,000 | `CLAUDE.md` | ~336 |
+| Old session notes | ~2,000 | `docs/INDEX.md` | ~135 |
+| Task history | ~1,000 | `COMMON_MISTAKES.md` | ~118 |
+| | | `ARCHITECTURE_MAP.md` | ~68 |
+| | | `QUICK_START.md` | ~49 |
+| **Startup total** | **~11,000** | **Fresh `cto init`** | **~706** |
+| | | **Filled in with my project** | **~800** |
+
+The After rows are measured with `cto measure` right after `cto init --yes` on an empty project. Adding my own rules and mistakes brought it to about 800.
 
 </details>
 
@@ -84,8 +159,6 @@ Everything that moved out is still in the repo. It costs 0 tokens until you ask 
 You can do this split by hand. `cto` does it the same way every time, checks it in CI, and keeps a `.bak` so the last change can be undone.
 
 ## What `cto init` creates
-
-![How cto splits docs into an always-loaded core and on-demand files](https://raw.githubusercontent.com/nadimtuhin/claude-token-optimizer/main/docs/images/how-it-works.svg)
 
 ```
 your-project/

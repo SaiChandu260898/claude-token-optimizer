@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="300" viewBox="0 0 1200 300">
+  <rect width="1200" height="300" fill="#f2f1ec"/>
+  <g font-family="ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, 'DejaVu Sans Mono', monospace">
+    <text x="56" y="70" font-size="18" font-weight="700" fill="#d63a2f" letter-spacing="2">EVERY CLAUDE CODE SESSION</text>
+    <text x="56" y="148" font-size="64" font-weight="700" fill="#6b6b6b">11,000</text>
+    <line x1="50" y1="127" x2="300" y2="127" stroke="#d63a2f" stroke-width="7" stroke-linecap="round"/>
+    <text x="318" y="148" font-size="28" fill="#6b6b6b">tokens</text>
+    <text x="56" y="238" font-size="88" font-weight="700" fill="#111111">~800</text>
+    <text x="300" y="238" font-size="28" fill="#111111">tokens</text>
+    <rect x="56" y="254" width="226" height="7" fill="#d63a2f"/>
+    <text x="300" y="196" font-size="20" font-weight="700" fill="#d63a2f">93% less</text>
+  </g>
+  <g>
+    <rect x="662" y="256" width="176" height="9" fill="#ffffff" stroke="#111111" stroke-width="2" transform="rotate(-3 750 260)"/>
+    <rect x="669" y="246.5" width="176" height="9" fill="#ffffff" stroke="#111111" stroke-width="2" transform="rotate(2 757 250.5)"/>
+    <rect x="663" y="237" width="176" height="9" fill="#ffffff" stroke="#111111" stroke-width="2" transform="rotate(-1 751 241)"/>
+    <rect x="670" y="227.5" width="176" height="9" fill="#ffffff" stroke="#111111" stroke-width="2" transform="rotate(4 758 231.5)"/>
+    <rect x="664" y="218" width="176" height="9" fill="#ffffff" stroke="#111111" stroke-width="2" transform="rotate(-2 752 222)"/>
+    <rect x="671" y="208.5" width="176" height="9" fill="#ffffff" stroke="#111111" stroke-width="2" transform="rotate(1 759 212.5)"/>
+    <rect x="665" y="199" width="176" height="9" fill="#ffffff" stroke="#111111" stroke-width="2" transform="rotate(-4 753 203)"/>
+    <rect x="672" y="189.5" width="176" height="9" fill="#ffffff" stroke="#111111" stroke-width="2" transform="rotate(3 760 193.5)"/>
+    <rect x="666" y="180" width="176" height="9" fill="#ffffff" stroke="#111111" stroke-width="2" transform="rotate(0 754 184)"/>
+    <rect x="673" y="170.5" width="176" height="9" fill="#ffffff" stroke="#111111" stroke-width="2" transform="rotate(-2 761 174.5)"/>
+    <rect x="667" y="161" width="176" height="9" fill="#ffffff" stroke="#111111" stroke-width="2" transform="rotate(2 755 165)"/>
+    <rect x="674" y="151.5" width="176" height="9" fill="#ffffff" stroke="#111111" stroke-width="2" transform="rotate(-3 762 155.5)"/>
+    <rect x="668" y="142" width="176" height="9" fill="#ffffff" stroke="#111111" stroke-width="2" transform="rotate(1 756 146)"/>
+    <rect x="662" y="132.5" width="176" height="9" fill="#ffffff" stroke="#111111" stroke-width="2" transform="rotate(4 750 136.5)"/>
+    <rect x="669" y="123" width="176" height="9" fill="#ffffff" stroke="#111111" stroke-width="2" transform="rotate(-1 757 127)"/>
+    <rect x="663" y="113.5" width="176" height="9" fill="#ffffff" stroke="#111111" stroke-width="2" transform="rotate(-3 751 117.5)"/>
+    <rect x="670" y="104" width="176" height="9" fill="#ffffff" stroke="#111111" stroke-width="2" transform="rotate(2 758 108)"/>
+    <rect x="664" y="94.5" width="176" height="9" fill="#ffffff" stroke="#111111" stroke-width="2" transform="rotate(0 752 98.5)"/>
+    <rect x="671" y="85" width="176" height="9" fill="#ffffff" stroke="#111111" stroke-width="2" transform="rotate(-2 759 89)"/>
+    <rect x="665" y="75.5" width="176" height="9" fill="#ffffff" stroke="#111111" stroke-width="2" transform="rotate(3 753 79.5)"/>
+    <rect x="672" y="66" width="176" height="9" fill="#ffffff" stroke="#111111" stroke-width="2" transform="rotate(-1 760 70)"/>
+    <rect x="666" y="56.5" width="176" height="9" fill="#ffffff" stroke="#111111" stroke-width="2" transform="rotate(2 754 60.5)"/>
+    <path d="M872,232 L898,232 M890,225 L899,232 L890,239" stroke="#111111" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M916,232 L942,232 M934,225 L943,232 L934,239" stroke="#111111" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M960,232 L986,232 M978,225 L987,232 L978,239" stroke="#111111" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="1006" y="232" width="130" height="9" fill="#ffffff" stroke="#111111" stroke-width="2" transform="rotate(0 1071 236)"/>
+    <rect x="1006" y="220" width="130" height="9" fill="#d63a2f" stroke="#111111" stroke-width="2" transform="rotate(0 1071 224)"/>
+    <rect x="1006" y="208" width="130" height="9" fill="#ffffff" stroke="#111111" stroke-width="2" transform="rotate(0 1071 212)"/>
+    <rect x="1006" y="196" width="130" height="9" fill="#ffffff" stroke="#111111" stroke-width="2" transform="rotate(0 1071 200)"/>
+  </g>
+</svg>
