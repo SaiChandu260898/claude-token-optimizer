@@ -1,0 +1,15 @@
+# claude-token-optimizer
+
+> claude-token-optimizer is an npm package with a CLI called `cto`. It cuts the tokens Claude Code loads at session start by keeping CLAUDE.md small and moving the rest into docs read on demand. It can set up that structure, measure auto-loaded tokens, compress and prune CLAUDE.md, audit it in CI, and install token-monitoring hooks. On the author's RedwoodJS project startup went from about 11,000 tokens to about 800. Counts use the Claude 2 tokenizer, so they are estimates. Needs Node 20+.
+
+## Docs
+
+- [README](https://raw.githubusercontent.com/nadimtuhin/claude-token-optimizer/main/README.md): the startup-token problem, install, and the main commands.
+- [AGENTS.md](https://raw.githubusercontent.com/nadimtuhin/claude-token-optimizer/main/AGENTS.md): non-interactive command sequence for agents, which commands prompt on stdin, and how to work on this repo.
+- [Quick start](https://raw.githubusercontent.com/nadimtuhin/claude-token-optimizer/main/QUICK_START.md): shortest path to a working setup.
+- [Universal setup](https://raw.githubusercontent.com/nadimtuhin/claude-token-optimizer/main/UNIVERSAL_SETUP.md): setup steps that work for any language or framework.
+- [Contributing](https://raw.githubusercontent.com/nadimtuhin/claude-token-optimizer/main/CONTRIBUTING.md): how to contribute changes.
+
+## Optional
+
+- [Examples](https://raw.githubusercontent.com/nadimtuhin/claude-token-optimizer/main/examples/README.md): index of per-framework CLAUDE.md examples (express, nextjs, django, rails, vue, and more).

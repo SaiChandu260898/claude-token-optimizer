@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="520" viewBox="0 0 800 520">
+  <rect width="800" height="520" fill="#0d1117"/>
+  <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" fill="#c9d1d9" font-size="15">
+    <text x="30" y="44" font-size="20" font-weight="700" fill="#f0f6fc">Startup tokens, before</text>
+    <text x="770" y="44" font-size="15" text-anchor="end" fill="#9da7b3">total ~11,000</text>
+    <text x="30" y="82">All docs</text>
+    <rect x="230" y="66" width="480" height="22" rx="4" fill="#484f58"/>
+    <text x="720" y="83">~8,000</text>
+    <text x="30" y="122">Old session notes</text>
+    <rect x="230" y="106" width="120" height="22" rx="4" fill="#484f58"/>
+    <text x="360" y="123">~2,000</text>
+    <text x="30" y="162">Task history</text>
+    <rect x="230" y="146" width="60" height="22" rx="4" fill="#484f58"/>
+    <text x="300" y="163">~1,000</text>
+    <line x1="30" y1="206" x2="770" y2="206" stroke="#30363d"/>
+    <text x="30" y="248" font-size="20" font-weight="700" fill="#f0f6fc">Startup tokens, after</text>
+    <text x="770" y="248" font-size="15" text-anchor="end" fill="#9da7b3">total ~800</text>
+    <text x="30" y="286">CLAUDE.md</text>
+    <rect x="230" y="270" width="27" height="22" rx="4" fill="#3fb950"/>
+    <text x="267" y="287">~450</text>
+    <text x="30" y="326">COMMON_MISTAKES.md</text>
+    <rect x="230" y="310" width="21" height="22" rx="4" fill="#3fb950"/>
+    <text x="261" y="327">~350</text>
+    <text x="30" y="366">QUICK_START.md</text>
+    <rect x="230" y="350" width="6" height="22" rx="3" fill="#3fb950"/>
+    <text x="246" y="367">~100</text>
+    <text x="30" y="406">ARCHITECTURE_MAP.md</text>
+    <rect x="230" y="390" width="9" height="22" rx="3" fill="#3fb950"/>
+    <text x="249" y="407">~150</text>
+    <text x="30" y="480" font-size="13" fill="#9da7b3">Measured on a RedwoodJS project. Claude 2 tokenizer, estimates. Bars share one scale.</text>
+  </g>
+</svg>

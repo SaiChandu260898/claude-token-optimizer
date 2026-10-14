@@ -1,6 +1,6 @@
 # Claude Token Optimizer
 
-Cuts what Claude Code loads at session start by moving old docs, session notes, and finished tasks into files it reads only when asked. On my RedwoodJS project that took startup from about 11,000 tokens to about 800.
+Reduce Claude Code token usage at the source. `cto` moves old docs, session notes, and finished tasks out of what Claude Code loads at session start and into files it reads only when asked. On my RedwoodJS project that took startup from about 11,000 tokens to about 800.
 
 ```bash
 npx claude-token-optimizer init
@@ -26,11 +26,31 @@ npm install -g claude-token-optimizer
 curl -fsSL https://raw.githubusercontent.com/nadimtuhin/claude-token-optimizer/main/install.sh | bash
 ```
 
-Node 20 or newer. `init` detects your framework from `package.json`, `requirements.txt`, `go.mod`, `composer.json`, `pom.xml`, or `Gemfile`. Pass `--framework nextjs` (or any of the 13 below) to override.
+Node 20 or newer. `init` detects your framework from `package.json`, `requirements.txt`, `go.mod`, `composer.json`, `pom.xml`, or `Gemfile`. Pass `--framework nextjs`, or any name in [AGENTS.md](AGENTS.md), to override.
+
+## For AI coding agents
+
+Hand your agent this repo link and one sentence:
+
+```
+Read https://raw.githubusercontent.com/nadimtuhin/claude-token-optimizer/main/AGENTS.md and set up cto in this project.
+```
+
+[AGENTS.md](AGENTS.md) lists the non-interactive commands and what each one writes. [llms.txt](llms.txt) indexes the docs for LLM tools. These run without a TTY and never wait for input:
+
+```bash
+npx -y claude-token-optimizer init --yes --framework express
+npx -y claude-token-optimizer measure
+npx -y claude-token-optimizer audit --json     # exits 1 on errors
+npx -y claude-token-optimizer prune --yes
+npx -y claude-token-optimizer compress --yes
+```
 
 ## Before and after
 
 Measured on my RedwoodJS project. Counts come from the Claude 2 tokenizer, so treat them as estimates.
+
+![Startup tokens before and after cto: about 11,000 down to about 800](docs/images/before-after.svg)
 
 ```
 Before                                After
@@ -43,9 +63,11 @@ Startup total      ~11,000            Startup total         ~800
 
 Everything that moved out is still in the repo. It costs 0 tokens until you ask Claude to read it.
 
-You can do this split by hand. `cto` does it the same way every time, checks it in CI, and keeps a `.bak` so every change can be undone.
+You can do this split by hand. `cto` does it the same way every time, checks it in CI, and keeps a `.bak` so the last change can be undone.
 
 ## What `cto init` creates
+
+![How cto splits docs into an always-loaded core and on-demand files](docs/images/how-it-works.svg)
 
 Abridged. `init` also creates `.claude/templates/` and `.claude/sessions/{active,archive}/`.
 
@@ -65,7 +87,7 @@ your-project/
     archive/                  old docs, never auto-loaded
 ```
 
-Existing files are kept. `cto init` appends missing sections to a `CLAUDE.md` you already have and never overwrites the support files. Use `--force` to replace `CLAUDE.md` outright.
+If you already have a `CLAUDE.md`, `cto init` appends the missing sections and leaves the support files alone. Without one, it writes every file above fresh, replacing any `.claudeignore` or `.claude/*.md` already there. `--force` replaces everything with no backup.
 
 ## Commands
 
@@ -74,7 +96,7 @@ Existing files are kept. `cto init` appends missing sections to a `CLAUDE.md` yo
 | `cto init` | Create the structure above, framework detected |
 | `cto measure` | Show how many tokens load at session start, file by file |
 | `cto audit` | 19 structural checks. `--json` for CI, `--fix` creates missing files. Exits 1 on errors |
-| `cto compress` | Shrink a markdown file with deterministic rules: blank lines, verbose fences, long lists, HTML comments, inline SVGs |
+| `cto compress` | Shrink a markdown file with deterministic rules: blank lines, verbose fences, long lists, HTML comments, inline SVGs. `--yes` for CI |
 | `cto prune` | Move completed tasks and old session notes out of a file into `.claude/`. `--days N` keeps recent notes. `--yes` for CI |
 | `cto diff` | Token delta between a file and its `.bak` after compress or prune |
 | `cto watch` | Live token dashboard that refreshes when watched files change |
@@ -84,7 +106,7 @@ Existing files are kept. `cto init` appends missing sections to a `CLAUDE.md` yo
 
 `compress`, `prune`, and `diff` work on `CLAUDE.md` by default. Point them at any markdown file with `--file docs/learnings/testing.md`.
 
-Every write is reversible: `compress` and `prune` write a `.bak` next to the target and support `--dry-run`. `prune` archives completed tasks and session notes under `.claude/`; empty sections are dropped and come back from the `.bak`.
+`compress` and `prune` support `--dry-run` and write a `.bak` of the file as it was before that run. A second run replaces the `.bak`, so copy the file first if you chain them. `compress` is lossy: it truncates long lists and strips HTML comments. `prune` archives completed tasks and session notes under `.claude/`; empty sections are dropped and come back from the `.bak`.
 
 ## Hooks
 
@@ -142,7 +164,11 @@ Plugins add their rules to every turn, so compare your own usage before and afte
 
 ## FAQ
 
-**Will `init` break my existing setup?** No. It only adds what is missing. Nothing is overwritten unless you pass `--force`.
+**How do I reduce Claude Code token usage?** Shrink what loads before your first prompt. Keep `CLAUDE.md` short, move history and old docs into files Claude reads on demand, and list the rest in `.claudeignore`. `cto init` sets this up and `cto measure` shows the result.
+
+**Does it work with Cursor, Codex, or other agents?** The output is plain markdown, so any agent can read it. The token counting and the `.claudeignore` rules target Claude Code.
+
+**Will `init` break my existing setup?** Not if you already have a `CLAUDE.md`: it only appends missing sections. In a project without one, it replaces any existing `.claudeignore` and `.claude/*.md` files, so commit or back them up first. Never pass `--force` unless you mean to start over.
 
 **Does it change how Claude Code works?** No. It is markdown files and a `.claudeignore`. You can edit or delete any of it.
 

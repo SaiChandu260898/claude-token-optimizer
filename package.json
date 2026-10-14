@@ -1,7 +1,7 @@
 {
   "name": "claude-token-optimizer",
   "version": "2.3.20",
-  "description": "Cut Claude Code token usage by 90% — real token counts, optimized project setup",
+  "description": "Cut the tokens Claude Code loads at session start. Sets up a small CLAUDE.md with on-demand doc folders, measures real token counts, and keeps it small with audit, prune, and compress.",
   "bin": {
     "cto": "bin/cto.js"
   },
@@ -26,9 +26,22 @@
   "keywords": [
     "claude",
     "claude-code",
+    "claude-md",
+    "claudeignore",
+    "anthropic",
     "token",
-    "optimizer",
+    "token-usage",
+    "token-optimization",
+    "context-window",
+    "context-engineering",
+    "llm",
     "ai",
+    "ai-coding",
+    "coding-agent",
+    "agents-md",
+    "developer-tools",
+    "cli",
+    "optimizer",
     "context"
   ],
   "license": "MIT",

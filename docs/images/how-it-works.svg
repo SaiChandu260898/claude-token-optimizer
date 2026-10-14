@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="480" viewBox="0 0 800 480">
+  <defs>
+    <marker id="ah" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" viewBox="0 0 10 10" preserveAspectRatio="none"><path d="M0,0 L10,5 L0,10 z" fill="#9da7b3"/></marker>
+    <marker id="ag" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" viewBox="0 0 10 10" preserveAspectRatio="none"><path d="M0,0 L10,5 L0,10 z" fill="#3fb950"/></marker>
+  </defs>
+  <rect width="800" height="480" fill="#0d1117"/>
+  <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" fill="#c9d1d9" font-size="15">
+    <rect x="30" y="130" width="130" height="60" rx="8" fill="#161b22" stroke="#30363d" stroke-width="2"/>
+    <text x="95" y="166" text-anchor="middle" font-weight="700" fill="#f0f6fc">Big docs</text>
+    <path d="M160,160 L230,160" stroke="#9da7b3" stroke-width="2.5" fill="none" marker-end="url(#ah)"/>
+    <rect x="236" y="138" width="104" height="44" rx="8" fill="#161b22" stroke="#3fb950" stroke-width="2"/>
+    <text x="288" y="166" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#3fb950">cto init</text>
+    <path d="M340,152 C380,152 380,80 420,80" stroke="#3fb950" stroke-width="2.5" fill="none" marker-end="url(#ag)"/>
+    <path d="M340,168 C380,168 380,230 420,230" stroke="#9da7b3" stroke-width="2.5" fill="none" marker-end="url(#ah)"/>
+    <rect x="426" y="30" width="344" height="100" rx="8" fill="#161b22" stroke="#3fb950" stroke-width="2"/>
+    <text x="446" y="62" font-weight="700" fill="#3fb950">Always loaded</text>
+    <text x="446" y="88" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="14">CLAUDE.md + .claude/*.md</text>
+    <text x="446" y="112" fill="#9da7b3" font-size="14">small</text>
+    <rect x="426" y="170" width="344" height="130" rx="8" fill="#161b22" stroke="#30363d" stroke-width="2"/>
+    <text x="446" y="202" font-weight="700" fill="#f0f6fc">On demand</text>
+    <text x="446" y="226" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13">docs/learnings, docs/archive,</text>
+    <text x="446" y="246" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13">.claude/sessions,</text>
+    <text x="446" y="266" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13">.claude/completions</text>
+    <text x="446" y="288" fill="#9da7b3" font-size="14">0 tokens until read</text>
+    <rect x="30" y="360" width="740" height="76" rx="8" fill="#161b22" stroke="#3fb950" stroke-width="2" stroke-dasharray="6 4"/>
+    <text x="400" y="392" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#3fb950">cto measure / audit / prune / compress</text>
+    <text x="400" y="418" text-anchor="middle" fill="#9da7b3" font-size="14">keep it small</text>
+    <path d="M598,300 L598,356" stroke="#9da7b3" stroke-width="2.5" fill="none" marker-end="url(#ah)"/>
+    <path d="M30,398 C14,398 14,340 14,250 C14,200 14,170 28,160" stroke="#3fb950" stroke-width="2.5" fill="none" marker-end="url(#ag)"/>
+  </g>
+</svg>
