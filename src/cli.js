@@ -9,6 +9,7 @@ import { pruneCommand } from './commands/prune.js';
 import { watchCommand } from './commands/watch.js';
 import { diffCommand } from './commands/diff.js';
 import { updateCommand } from './commands/update.js';
+import { companionsCommand } from './commands/companions.js';
 
 const { version } = createRequire(import.meta.url)('../package.json');
 
@@ -104,6 +105,11 @@ export function run() {
     .command('settings')
     .description('Print settings.json hooks block for all installed hooks')
     .action(() => hooksCommand('settings'));
+
+  program
+    .command('companions')
+    .description('List other token-saving tools for Claude Code and whether they are installed')
+    .action(companionsCommand);
 
   program
     .command('update')
