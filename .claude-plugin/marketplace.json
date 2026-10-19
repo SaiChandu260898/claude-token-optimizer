@@ -1,0 +1,11 @@
+{
+  "name": "saichandu-plugins",
+  "owner": { "name": "SaiChandu260898" },
+  "plugins": [
+    {
+      "name": "claude-token-optimizer",
+      "source": "./",
+      "description": "Measure and cut the tokens Claude Code loads at session start."
+    }
+  ]
+}

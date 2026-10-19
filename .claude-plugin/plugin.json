@@ -1,0 +1,6 @@
+{
+  "name": "claude-token-optimizer",
+  "version": "0.1.0",
+  "description": "Measure, audit and compress CLAUDE.md to cut startup tokens.",
+  "author": { "name": "SaiChandu260898" }
+}
